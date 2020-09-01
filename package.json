@@ -18,7 +18,8 @@
     "start": "webpack --watch --mode production",
     "build": "webpack --mode production",
     "clean": "rimraf dist",
-    "deploy": "cd examples && npm run deploy"
+    "deploy": "cd examples && npm run deploy",
+    "prepare": "npm build"
   },
   "keywords": [],
   "author": "UNICEF, based on work of Fouad Matin <m@fouad.org>",
