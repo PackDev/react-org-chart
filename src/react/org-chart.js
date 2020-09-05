@@ -42,6 +42,20 @@ class OrgChart extends PureComponent {
       ...options,
     })
   }
+
+  componentDidUpdate() {
+    const {
+      tree,
+      loadConfig,
+    } = this.props
+
+    const config = loadConfig()
+
+    config.render({
+      ...config,
+      treeData: tree,
+    })
+  }
 }
 
 module.exports = OrgChart
