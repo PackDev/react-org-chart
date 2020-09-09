@@ -268,5 +268,4 @@ function init(options) {
   const orgChart = document.getElementById('root')
   orgChart.append(canvasContainer)
   orgChart.append(svgContainer)
-
 }
