@@ -4,6 +4,7 @@ const renderLines = require('./renderLines')
 const exportOrgChartImage = require('./exportOrgChartImage')
 const exportOrgChartPdf = require('./exportOrgChartPdf')
 const onClick = require('./onClick')
+const onPersonClick = require('./onPersonClick')
 // const onMouseover = require('./onMouseover')
 const iconLink = require('./components/iconLink')
 const supervisorIcon = require('./components/supervisorIcon')
@@ -79,7 +80,7 @@ function render(config) {
     .insert('g')
     .attr('class', CHART_NODE_CLASS)
     .attr('transform', `translate(${parentNode.x0}, ${parentNode.y0})`)
-    .on('click', onClick(config))
+    .on('click', onPersonClick(config))
 
   // Person Card Shadow
   nodeEnter
@@ -156,6 +157,7 @@ function render(config) {
     .style('cursor', 'pointer')
     .style('fill', reportsColor)
     .text(helpers.getTextForTitle)
+    .on('click', onClick(config))
 
   // Person's Avatar
   nodeEnter

@@ -9,18 +9,8 @@ function onClick(configOnClick) {
   return datum => {
     if (d3.event.defaultPrevented) return
     const config = loadConfig()
-    const { loadChildren, render, onPersonClick } = config
+    const { loadChildren, render } = config
     event.preventDefault()
-
-    if (onPersonClick) {
-      const result = onPersonClick(datum, d3.event)
-
-      // If the `onPersonClick` handler returns `false`
-      // Cancel the rest of this click handler
-      if (typeof result === 'boolean' && !result) {
-        return
-      }
-    }
 
     // If this person doesn't have children but `hasChild` is true,
     // attempt to load using the `loadChildren` config function
