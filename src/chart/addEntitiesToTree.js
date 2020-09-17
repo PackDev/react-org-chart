@@ -19,10 +19,13 @@ const addChildren = (parent, ...children) => {
   if (!children.length) return
   parent.person.totalReports += children.length
   parent.hasChild = true
-  parent.children.push(...children)
+  console.log(parent)
+  const parentChildren = parent.children ? parent.children : parent._children ? parent._children : []
+  parentChildren.push(...children)
+  parent.children = parentChildren
 }
 
-const addEntity = (lookup, entity) => {
+const addEntity = (lookup, entity, config) => {
   // Check if tree is new
   if (!Object.keys(lookup).length) {
     // If entity has a parentId then it's not the root
@@ -47,18 +50,32 @@ const addEntity = (lookup, entity) => {
   // Add entity to lookup table by id
   lookup[entity.id] = created
 
+  // Check if given config, if so call render for this new entity
+  if (Object.keys(config).length) {
+    console.log('here')
+    config.render({
+      ...config,
+      treeData: lookup.root,
+      sourceNode: lookup[entity.parentId],
+    })
+  }
+
   return true
 }
 
 // TODO: Optimize how they are added, arrange passed array based on parentIDs
-const addEntitiesToTree = (lookup, ...entities) => {
+const addEntitiesToTree = (lookup, config = {}, ...entities) => {
+  const startedWith = entities.length
   let tries = 0
   while (entities.length) {
-    if (tries > entities.length + 1) throw new Error('Too many retries. Check tree structure')
+    if (tries > startedWith + 1) {
+      console.log(`Tries: ${tries}`)
+      throw new Error('Too many retries. Check tree structure')
+    }
     
     // We iterate over each entity in the array and try to add it to the tree
     entities.slice().forEach(entity => {
-      const success = addEntity(lookup, entity)
+      const success = addEntity(lookup, entity, config)
       // TODO: Figure out how to do this more efficiently in a consistent manner
       if (success) entities.splice(entities.indexOf(entity), 1)
     })

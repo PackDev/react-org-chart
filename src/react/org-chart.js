@@ -40,7 +40,7 @@ class OrgChart extends PureComponent {
       if (!entities || !entities.length)
         throw new Error('Either a tree or a list of entities must be provided to this component.')
       
-      dynamicTree = addEntitiesToTree(lookup, ...entities)
+      dynamicTree = addEntitiesToTree(lookup, undefined, ...entities)
     }
 
     init({
@@ -56,41 +56,25 @@ class OrgChart extends PureComponent {
     })
   }
 
-  // componentDidUpdate(prevProps) {
-  //   const {
-  //     tree,
-  //     loadConfig,
-  //     entities,
-  //   } = this.props
+  componentDidUpdate(prevProps) {
+    const {
+      tree,
+      loadConfig,
+      entities,
+    } = this.props
 
-  //   if (tree || !entities) return
+    if (tree || !entities) return
 
-  //   console.log(entities === prevProps.entities)
+    // Check if entities were updated
+    if (prevProps.entities.length === entities.length) return
 
-  //   console.log('here')
+    // Diff prev entities and current
+    const added = differenceWith(entities, prevProps.entities, (a, b) => a.id === b.id)
 
-  //   // Check if entities were updated
-  //   if (!prevProps.entities || prevProps.entities.length === entities.length) return
+    const config = loadConfig()
 
-  //   console.log('here too')
-
-  //   // Diff prev entities and current
-  //   const added = differenceWith(entities, prevProps.entities, (a, b) => a.id === b.id)
-  //   console.log(added)
-
-  //   // TODO: Add support for removing entities
-
-  //   // Go through array and render each new node,
-  //   // making sure to set the sourceNode as the parent of this node
-
-  //   // const config = loadConfig()
-
-  //   // config.render({
-  //   //   ...config,
-  //   //   treeData: tree,
-  //   //   sourceNode: 
-  //   // })
-  // }
+    addEntitiesToTree(config.lookup, config, ...added)
+  }
 }
 
 module.exports = OrgChart
