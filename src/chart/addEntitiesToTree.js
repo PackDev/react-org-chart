@@ -19,7 +19,6 @@ const addChildren = (parent, ...children) => {
   if (!children.length) return
   parent.person.totalReports += children.length
   parent.hasChild = true
-  console.log(parent)
   const parentChildren = parent.children ? parent.children : parent._children ? parent._children : []
   parentChildren.push(...children)
   parent.children = parentChildren
@@ -52,7 +51,6 @@ const addEntity = (lookup, entity, config) => {
 
   // Check if given config, if so call render for this new entity
   if (Object.keys(config).length) {
-    console.log('here')
     config.render({
       ...config,
       treeData: lookup.root,
